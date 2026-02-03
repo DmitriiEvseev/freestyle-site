@@ -12,7 +12,10 @@ let currentPosY = targetPosY;
 let isDragging = false;
 let dragDelayId = null;
 let pendingTouch = false;
+let touchStartX = 0;
+let touchStartY = 0;
 const spinRate = 0.72;
+const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
 function animateBall() {
   currentX += (targetX - currentX) * 0.08;
@@ -26,12 +29,12 @@ function animateBall() {
   requestAnimationFrame(animateBall);
 }
 
-function handlePointer(event) {
+function updateDrag(clientX, clientY) {
   if (!isDragging) {
     return;
   }
-  const x = event.clientX / window.innerWidth - 0.5;
-  const y = event.clientY / window.innerHeight - 0.5;
+  const x = clientX / window.innerWidth - 0.5;
+  const y = clientY / window.innerHeight - 0.5;
 
   targetX = x * 18;
   targetY = -y * 18;
@@ -40,32 +43,24 @@ function handlePointer(event) {
   const halfH = stage.offsetHeight / 2;
   const maxX = window.innerWidth - stage.offsetWidth;
   const maxY = window.innerHeight - stage.offsetHeight;
-  targetPosX = Math.min(Math.max(event.clientX - halfW, 0), maxX);
-  targetPosY = Math.min(Math.max(event.clientY - halfH, 0), maxY);
+  targetPosX = Math.min(Math.max(clientX - halfW, 0), maxX);
+  targetPosY = Math.min(Math.max(clientY - halfH, 0), maxY);
 }
 
-window.addEventListener("pointermove", handlePointer);
+function handlePointer(event) {
+  updateDrag(event.clientX, event.clientY);
+}
 
-stage.addEventListener("pointerdown", (event) => {
-  if (event.pointerType === "touch") {
-    pendingTouch = true;
-    dragDelayId = window.setTimeout(() => {
-      if (!pendingTouch) {
-        return;
-      }
-      isDragging = true;
-      stage.classList.remove("idle");
-      stage.style.touchAction = "none";
-      handlePointer(event);
-    }, 220);
-    return;
-  }
+if (!isTouchDevice) {
+  window.addEventListener("pointermove", handlePointer);
 
-  isDragging = true;
-  stage.classList.remove("idle");
-  stage.setPointerCapture(event.pointerId);
-  handlePointer(event);
-});
+  stage.addEventListener("pointerdown", (event) => {
+    isDragging = true;
+    stage.classList.remove("idle");
+    stage.setPointerCapture(event.pointerId);
+    updateDrag(event.clientX, event.clientY);
+  });
+}
 
 function stopDrag(event) {
   if (dragDelayId) {
@@ -83,8 +78,59 @@ function stopDrag(event) {
   }
 }
 
-window.addEventListener("pointerup", stopDrag);
-window.addEventListener("pointercancel", stopDrag);
+if (!isTouchDevice) {
+  window.addEventListener("pointerup", stopDrag);
+  window.addEventListener("pointercancel", stopDrag);
+}
+
+if (isTouchDevice) {
+  stage.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) {
+        return;
+      }
+      const touch = event.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      pendingTouch = true;
+      dragDelayId = window.setTimeout(() => {
+        if (!pendingTouch) {
+          return;
+        }
+        isDragging = true;
+        stage.classList.remove("idle");
+        stage.style.touchAction = "none";
+        updateDrag(touchStartX, touchStartY);
+      }, 220);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!pendingTouch && !isDragging) {
+        return;
+      }
+      const touch = event.touches[0];
+      if (!isDragging) {
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.hypot(dx, dy) > 10) {
+          stopDrag();
+        }
+        return;
+      }
+      event.preventDefault();
+      updateDrag(touch.clientX, touch.clientY);
+    },
+    { passive: false }
+  );
+
+  window.addEventListener("touchend", stopDrag, { passive: true });
+  window.addEventListener("touchcancel", stopDrag, { passive: true });
+}
 
 window.addEventListener("mouseleave", () => {
   targetX = 0;
