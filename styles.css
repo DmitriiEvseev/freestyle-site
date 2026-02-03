@@ -186,7 +186,7 @@ main {
   pointer-events: auto;
   opacity: 1;
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
 }
 
 .ball {

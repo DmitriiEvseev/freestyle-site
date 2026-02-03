@@ -47,7 +47,9 @@ window.addEventListener("pointermove", handlePointer);
 stage.addEventListener("pointerdown", (event) => {
   isDragging = true;
   stage.classList.remove("idle");
-  stage.setPointerCapture(event.pointerId);
+  if (event.pointerType !== "touch") {
+    stage.setPointerCapture(event.pointerId);
+  }
   handlePointer(event);
 });
 
