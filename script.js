@@ -10,6 +10,8 @@ let targetPosY = window.innerHeight * 0.2;
 let currentPosX = targetPosX;
 let currentPosY = targetPosY;
 let isDragging = false;
+let dragDelayId = null;
+let pendingTouch = false;
 const spinRate = 0.72;
 
 function animateBall() {
@@ -45,17 +47,35 @@ function handlePointer(event) {
 window.addEventListener("pointermove", handlePointer);
 
 stage.addEventListener("pointerdown", (event) => {
+  if (event.pointerType === "touch") {
+    pendingTouch = true;
+    dragDelayId = window.setTimeout(() => {
+      if (!pendingTouch) {
+        return;
+      }
+      isDragging = true;
+      stage.classList.remove("idle");
+      stage.style.touchAction = "none";
+      handlePointer(event);
+    }, 220);
+    return;
+  }
+
   isDragging = true;
   stage.classList.remove("idle");
-  if (event.pointerType !== "touch") {
-    stage.setPointerCapture(event.pointerId);
-  }
+  stage.setPointerCapture(event.pointerId);
   handlePointer(event);
 });
 
 function stopDrag(event) {
+  if (dragDelayId) {
+    window.clearTimeout(dragDelayId);
+    dragDelayId = null;
+  }
+  pendingTouch = false;
   isDragging = false;
   stage.classList.add("idle");
+  stage.style.touchAction = "";
   targetX = 0;
   targetY = 0;
   if (event && stage.hasPointerCapture(event.pointerId)) {
