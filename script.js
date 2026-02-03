@@ -10,12 +10,7 @@ let targetPosY = window.innerHeight * 0.2;
 let currentPosX = targetPosX;
 let currentPosY = targetPosY;
 let isDragging = false;
-let dragDelayId = null;
-let pendingTouch = false;
-let touchStartX = 0;
-let touchStartY = 0;
 const spinRate = 0.72;
-const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
 function animateBall() {
   currentX += (targetX - currentX) * 0.08;
@@ -48,29 +43,28 @@ function updateDrag(clientX, clientY) {
 }
 
 function handlePointer(event) {
+  if (!isDragging) {
+    return;
+  }
+  if (event.cancelable) {
+    event.preventDefault();
+  }
   updateDrag(event.clientX, event.clientY);
 }
 
-if (!isTouchDevice) {
-  window.addEventListener("pointermove", handlePointer);
-
-  stage.addEventListener("pointerdown", (event) => {
-    isDragging = true;
-    stage.classList.remove("idle");
-    stage.setPointerCapture(event.pointerId);
-    updateDrag(event.clientX, event.clientY);
-  });
-}
+stage.addEventListener("pointerdown", (event) => {
+  if (event.cancelable) {
+    event.preventDefault();
+  }
+  isDragging = true;
+  stage.classList.remove("idle");
+  stage.setPointerCapture(event.pointerId);
+  updateDrag(event.clientX, event.clientY);
+});
 
 function stopDrag(event) {
-  if (dragDelayId) {
-    window.clearTimeout(dragDelayId);
-    dragDelayId = null;
-  }
-  pendingTouch = false;
   isDragging = false;
   stage.classList.add("idle");
-  stage.style.touchAction = "";
   targetX = 0;
   targetY = 0;
   if (event && stage.hasPointerCapture(event.pointerId)) {
@@ -78,59 +72,9 @@ function stopDrag(event) {
   }
 }
 
-if (!isTouchDevice) {
-  window.addEventListener("pointerup", stopDrag);
-  window.addEventListener("pointercancel", stopDrag);
-}
-
-if (isTouchDevice) {
-  stage.addEventListener(
-    "touchstart",
-    (event) => {
-      if (event.touches.length !== 1) {
-        return;
-      }
-      const touch = event.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      pendingTouch = true;
-      dragDelayId = window.setTimeout(() => {
-        if (!pendingTouch) {
-          return;
-        }
-        isDragging = true;
-        stage.classList.remove("idle");
-        stage.style.touchAction = "none";
-        updateDrag(touchStartX, touchStartY);
-      }, 220);
-    },
-    { passive: true }
-  );
-
-  window.addEventListener(
-    "touchmove",
-    (event) => {
-      if (!pendingTouch && !isDragging) {
-        return;
-      }
-      const touch = event.touches[0];
-      if (!isDragging) {
-        const dx = touch.clientX - touchStartX;
-        const dy = touch.clientY - touchStartY;
-        if (Math.hypot(dx, dy) > 10) {
-          stopDrag();
-        }
-        return;
-      }
-      event.preventDefault();
-      updateDrag(touch.clientX, touch.clientY);
-    },
-    { passive: false }
-  );
-
-  window.addEventListener("touchend", stopDrag, { passive: true });
-  window.addEventListener("touchcancel", stopDrag, { passive: true });
-}
+stage.addEventListener("pointermove", handlePointer);
+window.addEventListener("pointerup", stopDrag);
+window.addEventListener("pointercancel", stopDrag);
 
 window.addEventListener("mouseleave", () => {
   targetX = 0;
