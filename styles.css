@@ -174,8 +174,8 @@ main {
 }
 
 .stage {
-  width: min(220px, 50vw);
-  height: min(220px, 50vw);
+  width: min(176px, 40vw);
+  height: min(176px, 40vw);
   display: grid;
   place-items: center;
   position: fixed;
