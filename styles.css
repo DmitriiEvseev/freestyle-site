@@ -285,7 +285,7 @@ main {
 }
 
 .hero-photo.secondary {
-  width: min(520px, 92vw);
+  width: min(420px, 80vw);
   border-radius: 18px;
   border: 1px solid rgba(255, 122, 24, 0.3);
   background: linear-gradient(135deg, rgba(255, 122, 24, 0.18), rgba(12, 12, 16, 0.9));
@@ -296,9 +296,9 @@ main {
 
 .hero-photo.secondary img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: auto;
   border-radius: 0;
   box-shadow: none;
 }
@@ -386,7 +386,7 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.7fr);
   gap: 28px;
-  align-items: center;
+  align-items: start;
 }
 
 .benefits {
