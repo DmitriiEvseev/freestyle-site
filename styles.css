@@ -236,7 +236,7 @@ main {
 }
 
 .hero-photo {
-  width: min(520px, 92vw);
+  width: min(640px, 96vw);
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -257,9 +257,14 @@ main {
   background: rgba(0, 0, 0, 0.4);
 }
 
-.hint {
-  color: var(--muted);
-  font-size: 0.95rem;
+.photo-break {
+  padding: 20px 6vw 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.photo-break .hero-photo {
+  width: min(720px, 96vw);
 }
 
 @keyframes spin {
@@ -449,6 +454,12 @@ main {
   border: 1px solid var(--stroke);
 }
 
+iframe {
+  width: 100%;
+  min-height: 620px;
+  border: 0;
+}
+
 label {
   display: grid;
   gap: 8px;
@@ -466,9 +477,9 @@ textarea {
   font-family: inherit;
 }
 
-.form-hint {
-  font-size: 0.85rem;
-  color: var(--muted);
+.form-status {
+  font-size: 0.9rem;
+  color: var(--accent-soft);
 }
 
 .footer {
