@@ -293,6 +293,8 @@ main {
   display: grid;
   gap: 12px;
   justify-items: center;
+  align-items: center;
+  transform: none;
 }
 
 .hero-photo.secondary img {
