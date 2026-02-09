@@ -510,7 +510,6 @@ main {
   letter-spacing: 1px;
   font-size: 0.75rem;
   overflow: hidden;
-  aspect-ratio: 16 / 9;
 }
 
 .media-block img,
@@ -523,6 +522,8 @@ main {
 
 .media-block video {
   background: #000;
+  height: auto;
+  object-fit: contain;
 }
 
 .media-block.tall {
