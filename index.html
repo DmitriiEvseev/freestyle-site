@@ -204,7 +204,10 @@
 
       <section class="gallery" id="media">
         <div class="section-title">
-          <h2>Video galerie</h2>
+          <h2>Galerie vidéo</h2>
+          <p>
+            Extraits réels de performances, shows et moments de participation public.
+          </p>
         </div>
         <div class="gallery-grid">
           <figure class="media-block">
@@ -244,27 +247,30 @@
       </section>
 
       <section class="cta" id="contact">
-        <div>
+        <div class="cta-copy">
           <h2>Prêt à réserver ?</h2>
           <p>
-            Date, lieu, public, format. Réponse rapide.
+            Décrivez votre date, votre lieu, votre public et le format souhaité. Je vous réponds
+            avec une proposition adaptée.
           </p>
           <div class="cta-actions">
-            <a class="btn" href="mailto:demo1power@gmail.com">Obtenir un devis</a>
             <a class="btn ghost" href="tel:+33767028855">Appeler maintenant</a>
           </div>
         </div>
         <div class="cta-form" aria-label="Formulaire de contact">
-          <form
-            id="contact-form"
-            action="https://formsubmit.co/demo1power@gmail.com"
-            method="POST"
-          >
-            <input type="hidden" name="_subject" value="Nouvelle demande freestyle" />
-            <input type="hidden" name="_captcha" value="true" />
+          <form id="contact-form" action="https://formspree.io/f/xojpbrer" method="POST">
+            <input type="hidden" name="_subject" value="Nouvelle demande freestyle DemoPower" />
             <label for="contact-name">
-              Nom
-              <input id="contact-name" name="name" type="text" placeholder="Votre nom" required />
+              Nom / structure
+              <input
+                id="contact-name"
+                name="name"
+                type="text"
+                placeholder="Votre nom"
+                required
+                data-fs-field
+              />
+              <span class="field-error" data-fs-error="name"></span>
             </label>
             <label for="contact-email">
               Email
@@ -274,7 +280,53 @@
                 type="email"
                 placeholder="vous@email.com"
                 required
+                data-fs-field
               />
+              <span class="field-error" data-fs-error="email"></span>
+            </label>
+            <label for="contact-phone">
+              Téléphone
+              <input
+                id="contact-phone"
+                name="phone"
+                type="tel"
+                placeholder="06 00 00 00 00"
+                data-fs-field
+              />
+              <span class="field-error" data-fs-error="phone"></span>
+            </label>
+            <label for="contact-event-date">
+              Date de l'événement
+              <input
+                id="contact-event-date"
+                name="event_date"
+                type="text"
+                placeholder="Ex. 22 juin 2026"
+                data-fs-field
+              />
+              <span class="field-error" data-fs-error="event_date"></span>
+            </label>
+            <label for="contact-location">
+              Lieu
+              <input
+                id="contact-location"
+                name="location"
+                type="text"
+                placeholder="Ville / salle / événement"
+                data-fs-field
+              />
+              <span class="field-error" data-fs-error="location"></span>
+            </label>
+            <label for="contact-format">
+              Format souhaité
+              <select id="contact-format" name="format" required data-fs-field>
+                <option value="">Choisir un format</option>
+                <option value="show">Show freestyle</option>
+                <option value="initiation">Initiation / atelier</option>
+                <option value="show-et-initiation">Show + initiation</option>
+                <option value="a-definir">A définir ensemble</option>
+              </select>
+              <span class="field-error" data-fs-error="format"></span>
             </label>
             <label for="contact-message">
               Message
@@ -282,15 +334,18 @@
                 id="contact-message"
                 name="message"
                 rows="6"
-                placeholder="Date, lieu, public, format souhaite..."
+                placeholder="Type de public, durée prévue, objectifs, contraintes techniques..."
                 required
+                data-fs-field
               ></textarea>
+              <span class="field-error" data-fs-error="message"></span>
             </label>
-            <button class="btn" type="submit">Envoyer par email</button>
-            <p class="form-status" id="form-status">
-              Envoi direct sans connexion Google. Le premier envoi demandera une confirmation
-              d'adresse email.
+            <button class="btn" type="submit" data-fs-submit-btn>Envoyer la demande</button>
+            <p class="form-status">
+              Formulaire sécurisé via Formspree. Réponse rapide après réception de votre demande.
             </p>
+            <p class="form-feedback form-feedback-success" data-fs-success></p>
+            <p class="form-feedback form-feedback-error" data-fs-error="form"></p>
           </form>
         </div>
       </section>
@@ -304,5 +359,25 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+      formspree("initForm", {
+        formElement: "#contact-form",
+        formId: "xojpbrer",
+        onSuccess: function () {
+          const successBox = document.querySelector("[data-fs-success]");
+          if (successBox) {
+            successBox.textContent = "Merci. Votre demande a bien ete envoyee.";
+          }
+        },
+        onError: function () {
+          const errorBox = document.querySelector('[data-fs-error="form"]');
+          if (errorBox && !errorBox.textContent) {
+            errorBox.textContent = "Une erreur est survenue. Reessayez dans un instant.";
+          }
+        }
+      });
+    </script>
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
   </body>
 </html>
