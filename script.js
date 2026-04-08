@@ -128,29 +128,4 @@ document.querySelectorAll("video").forEach((video) => {
   videoObserver.observe(video);
 });
 
-const contactForm = document.getElementById("contact-form");
-const formStatus = document.getElementById("form-status");
-
-if (contactForm) {
-  contactForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(contactForm);
-    const name = (formData.get("name") || "").toString().trim();
-    const email = (formData.get("email") || "").toString().trim();
-    const message = (formData.get("message") || "").toString().trim();
-
-    const subject = encodeURIComponent(`Demande de devis freestyle - ${name || "Nouveau contact"}`);
-    const body = encodeURIComponent(
-      `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    );
-
-    if (formStatus) {
-      formStatus.textContent = "Ouverture de votre application email...";
-    }
-
-    window.location.href = `mailto:demo1power@gmail.com?subject=${subject}&body=${body}`;
-  });
-}
-
 animateBall();

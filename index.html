@@ -255,7 +255,13 @@
           </div>
         </div>
         <div class="cta-form" aria-label="Formulaire de contact">
-          <form id="contact-form">
+          <form
+            id="contact-form"
+            action="https://formsubmit.co/demo1power@gmail.com"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="Nouvelle demande freestyle" />
+            <input type="hidden" name="_captcha" value="true" />
             <label for="contact-name">
               Nom
               <input id="contact-name" name="name" type="text" placeholder="Votre nom" required />
@@ -282,7 +288,8 @@
             </label>
             <button class="btn" type="submit">Envoyer par email</button>
             <p class="form-status" id="form-status">
-              Le formulaire ouvre votre application email sans connexion Google.
+              Envoi direct sans connexion Google. Le premier envoi demandera une confirmation
+              d'adresse email.
             </p>
           </form>
         </div>
