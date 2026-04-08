@@ -409,11 +409,14 @@ main {
   background: var(--bg-alt);
 }
 
-.format-inner {
+.photo-break {
+  padding: 10px 6vw 10px;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.7fr);
-  gap: 28px;
-  align-items: start;
+  justify-items: center;
+}
+
+.format-inner {
+  display: block;
 }
 
 .benefits {
