@@ -601,10 +601,9 @@ main {
   border: 1px solid var(--stroke);
 }
 
-iframe {
-  width: 100%;
-  min-height: 620px;
-  border: 0;
+#contact-form {
+  display: grid;
+  gap: 14px;
 }
 
 label {
@@ -622,6 +621,11 @@ textarea {
   padding: 10px 12px;
   color: var(--text);
   font-family: inherit;
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
 }
 
 .form-status {

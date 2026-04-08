@@ -255,16 +255,36 @@
           </div>
         </div>
         <div class="cta-form" aria-label="Formulaire de contact">
-          <iframe
-            title="Demande de devis"
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdEu4FyHPbsscGudPdZFqultZjeVv720dKuau-M4pUm1x86FA/viewform?embedded=true"
-            loading="lazy"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
-          >
-            Chargement…
-          </iframe>
+          <form id="contact-form">
+            <label for="contact-name">
+              Nom
+              <input id="contact-name" name="name" type="text" placeholder="Votre nom" required />
+            </label>
+            <label for="contact-email">
+              Email
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                placeholder="vous@email.com"
+                required
+              />
+            </label>
+            <label for="contact-message">
+              Message
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="6"
+                placeholder="Date, lieu, public, format souhaite..."
+                required
+              ></textarea>
+            </label>
+            <button class="btn" type="submit">Envoyer par email</button>
+            <p class="form-status" id="form-status">
+              Le formulaire ouvre votre application email sans connexion Google.
+            </p>
+          </form>
         </div>
       </section>
     </main>
