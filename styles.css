@@ -352,6 +352,20 @@ main {
   justify-items: center;
 }
 
+.photo-break-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.desktop-only {
+  display: grid;
+}
+
+.mobile-only {
+  display: none;
+}
+
 .format-inner {
   display: block;
 }
@@ -667,6 +681,10 @@ textarea {
   .benefits {
     display: none;
   }
+
+  .photo-break-pair {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 600px) {
@@ -675,12 +693,16 @@ textarea {
     margin: 0 auto;
   }
 
-  .initiations-copy {
+  .social-strip {
+    justify-content: flex-start;
+  }
+
+  .desktop-only {
     display: none;
   }
 
-  .social-strip {
-    justify-content: flex-start;
+  .mobile-only {
+    display: grid;
   }
 
   .hero-cta {
